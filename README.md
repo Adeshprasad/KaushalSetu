@@ -181,7 +181,7 @@ Contributions are welcome. Open an issue to discuss what you'd like to change, t
 
 ## License
 
-Add a `LICENSE` file (MIT is a common choice) and update this section.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
