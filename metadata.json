@@ -1,0 +1,6 @@
+{
+  "name": "KaushalSetu Portal",
+  "description": "Regional-language skill and job matching platform designed for rural youth in India.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

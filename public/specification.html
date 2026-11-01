@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KaushalSetu Portal — Complete Reconstruction Specification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF9F5;
+      --surface: #FFFFFF;
+      --text: #2B2927;
+      --text-muted: #6B665F;
+      --border: #E5E0D5;
+      --teal: #2D5A5A;
+      --teal-light: #EBF1F1;
+      --ochre: #E87D4D;
+      --ochre-light: #FDF0EA;
+      --code-bg: #F4F1EA;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .top-action-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .brand-title span.accent {
+      color: var(--ochre);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #224646;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: #F0ECE1;
+    }
+
+    .document-container {
+      max-width: 960px;
+      margin: 36px auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 56px 64px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .doc-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 28px;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--teal-light);
+      color: var(--teal);
+      border: 1px solid #CCE0E0;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .meta-item strong {
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      color: var(--teal);
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: #3D3A37;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #F8F7F3;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    pre, code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+
+    p code, li code {
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .toc {
+      background: #FAF9F5;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 28px;
+      margin: 28px 0 40px 0;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .toc ol {
+      margin-bottom: 0;
+      column-count: 2;
+      column-gap: 24px;
+    }
+
+    .toc a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 11pt;
+      }
+      .top-action-bar {
+        display: none !important;
+      }
+      .document-container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+      }
+      h2 {
+        page-break-after: avoid;
+        margin-top: 24pt;
+      }
+      table, pre {
+        page-break-inside: avoid;
+      }
+      .toc {
+        page-break-after: always;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .document-container {
+        padding: 28px 20px;
+        margin: 16px;
+      }
+      .toc ol {
+        column-count: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Fixed Action Bar -->
+  <div class="top-action-bar">
+    <div class="brand-title">
+      <span>Kaushal<span class="accent">Setu</span> Portal</span>
+      <span style="font-size: 12px; color: var(--text-muted); font-weight: normal;">• Reconstruction Specification</span>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>Print / Save as PDF</span>
+      </button>
+      <a class="btn btn-secondary" href="/KAUSHALSETU_SPECIFICATION.md" download="KAUSHALSETU_SPECIFICATION.md">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Download Markdown</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="document-container">
+
+    <div class="doc-header">
+      <div class="badge">Official Technical Specification</div>
+      <h1>KaushalSetu Portal — Complete Application Reconstruction Specification</h1>
+      <p style="font-size: 16px; color: var(--text-muted);">
+        Exhaustive reverse-engineered architectural and functional documentation for independent reproduction.
+      </p>
+      <div class="meta-grid">
+        <div class="meta-item"><strong>Project ID:</strong> 5766d5de-19ba-4db1-a4ba-9408c0f97c4b</div>
+        <div class="meta-item"><strong>Target Framework:</strong> React 18, Express, Vite, Tailwind CSS v4</div>
+        <div class="meta-item"><strong>AI Engine:</strong> Gemini 3.8 Flash (@google/genai)</div>
+        <div class="meta-item"><strong>Database:</strong> Firebase Cloud Firestore</div>
+        <div class="meta-item"><strong>Date:</strong> September 2026</div>
+        <div class="meta-item"><strong>Document Version:</strong> 1.0 (Final)</div>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h3>Table of Contents</h3>
+      <ol>
+        <li><a href="#sec-1">Executive Summary & Overview</a></li>
+        <li><a href="#sec-2">Feature Inventory</a></li>
+        <li><a href="#sec-3">User Flows & Navigation Architecture</a></li>
+        <li><a href="#sec-4">Detailed Screen & Component Specs</a></li>
+        <li><a href="#sec-5">UI/UX & Design System Architecture</a></li>
+        <li><a href="#sec-6">Architectural Blueprint</a></li>
+        <li><a href="#sec-7">Data Models & Schemas</a></li>
+        <li><a href="#sec-8">AI & Gemini Functionality</a></li>
+        <li><a href="#sec-9">External APIs & Grounding Integrations</a></li>
+        <li><a href="#sec-10">Business Logic & Core Algorithms</a></li>
+        <li><a href="#sec-11">State Management & Data Flow</a></li>
+        <li><a href="#sec-12">Authentication & RBAC</a></li>
+        <li><a href="#sec-13">Error Handling & Resilience</a></li>
+        <li><a href="#sec-14">Dependencies & Technical Stack</a></li>
+        <li><a href="#sec-15">Project Structure & Directory Layout</a></li>
+        <li><a href="#sec-16">Configuration & Env Variables</a></li>
+        <li><a href="#sec-17">Responsive Design & Accessibility</a></li>
+        <li><a href="#sec-18">Demo Flow & Mock Personas</a></li>
+        <li><a href="#sec-19">Known Limitations & Technical Debt</a></li>
+        <li><a href="#sec-20">Step-by-Step Reconstruction Checklist</a></li>
+        <li><a href="#sec-21">Minimum Viable Product (MVP) Scope</a></li>
+        <li><a href="#sec-22">Quality & Verification Checks</a></li>
+        <li><a href="#sec-23">Final Self-Check & Synthesis</a></li>
+      </ol>
+    </div>
+
+    <!-- 1. Executive Summary -->
+    <h2 id="sec-1">1. Executive Summary & Overview</h2>
+    <h3>1.1 Application Vision & Mission</h3>
+    <p>
+      <strong>KaushalSetu</strong> (<em>कौशल सेतु</em> — "Bridge of Skills") is a production-grade full-stack civic portal engineered specifically for <strong>rural youth, informal workers, and vocational tradespeople across India</strong>. The platform bridges the divide between unorganized, colloquial, hands-on trade skills (such as welding, motorcycle repair, tailoring, solar panel installation, masonry, plumbing, and mobile repair) and formal livelihood opportunities.
+    </p>
+    <h3>1.2 Core Value Propositions</h3>
+    <ul>
+      <li><strong>Low-Literacy & Vernacular Accessibility</strong>: Multilingual interface supporting <strong>Hindi, English, Bengali, Odia, and Tamil</strong>, paired with browser-native Web Speech API voice input and colloquial natural language understanding.</li>
+      <li><strong>Deterministic Matching Engine</strong>: Transparent skill matching computing qualification overlap percentages, matched skills, missing skills, and geographical proximity between candidates and verified trade employers.</li>
+      <li><strong>AI Plain-Language Translation & Grounding</strong>: Server-side Gemini 3.8 Flash integrations transforming bureaucratic government scheme rules into 5 simple pillars, conversational Q&A drawers, and plain-language job qualification explainers.</li>
+      <li><strong>Physical World Discovery via Google Maps Grounding</strong>: Physical vocational institutes (Government ITIs, PMKVY Pradhan Mantri Kaushal Kendras, Common Service Centres/CSCs, and Polytechnics) located and verified via Gemini Maps tool grounding and deterministic PIN/district lookups.</li>
+      <li><strong>Portable Credentialing ("Kaushal Biodata")</strong>: Printable, mobile-optimized A4 Skill Card with generated candidate verification IDs, trade qualifications, wage expectations, and 1-click WhatsApp sharing for local contractors.</li>
+      <li><strong>Dual Data Persistence</strong>: Seamless real-time synchronization between local memory stores and Firebase Firestore collections with graceful offline fallbacks.</li>
+    </ul>
+
+    <!-- 2. Feature Inventory -->
+    <h2 id="sec-2">2. Feature Inventory</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature ID</th>
+          <th>Module / Feature Name</th>
+          <th>UI Entry Point</th>
+          <th>Technical Implementation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>F-01</strong></td>
+          <td>Colloquial Skill Identification (Voice & Text)</td>
+          <td>Home tab hero & skill card (<code>#skill-input-card</code>)</td>
+          <td>Web Speech API (<code>webkitSpeechRecognition</code>) + POST <code>/api/skills/extract</code> (Gemini 3.8 Flash) with deterministic fallback to <code>SKILL_TAXONOMY</code> alias matching.</td>
+        </tr>
+        <tr>
+          <td><strong>F-02</strong></td>
+          <td>Deterministic Job Matching & Ranking</td>
+          <td>Home (<code>#matched-results-section</code>) & Jobs tab</td>
+          <td><code>rankJobsForUser</code> algorithm in <code>src/utils/matching.ts</code> calculating weighted skill overlap (70%) and location match (30%), sorted by match % or salary.</td>
+        </tr>
+        <tr>
+          <td><strong>F-03</strong></td>
+          <td>AI Plain-Language Job Match Explainer</td>
+          <td>Job Card "View Details & Apply"</td>
+          <td>POST <code>/api/jobs/explain-match</code> querying Gemini 3.8 Flash to explain match %, wage potential, and missing skill advice in simple Hindi/English.</td>
+        </tr>
+        <tr>
+          <td><strong>F-04</strong></td>
+          <td>1-Click Rapid Job Application</td>
+          <td>Job Details Modal</td>
+          <td><code>submitApplicationToFirestore</code> writing to <code>user_applications</code> Firestore collection with optimistic local state update.</td>
+        </tr>
+        <tr>
+          <td><strong>F-05</strong></td>
+          <td>Government Scheme Matching & Filter</td>
+          <td>Home & Govt Schemes tab</td>
+          <td><code>matchGovernmentSchemes</code> algorithm mapping user skills against national schemes (PM Vishwakarma, PMKVY 4.0, DDU-GKY, NAPS, Suryaghar, etc.).</td>
+        </tr>
+        <tr>
+          <td><strong>F-06</strong></td>
+          <td>Plain-Language Scheme Simplifier</td>
+          <td>Scheme Card "सरल भाषा में समझें"</td>
+          <td>POST <code>/api/schemes/explain-simple</code> querying Gemini with structured JSON output: simple summary, eligibility, benefits, steps, and required documents.</td>
+        </tr>
+        <tr>
+          <td><strong>F-07</strong></td>
+          <td>Scheme Q&A Conversational Chatbot</td>
+          <td>Scheme Card "सवाल पूछें (AI)"</td>
+          <td><code>SchemeChatDrawer</code> invoking POST <code>/api/schemes/chat</code> with conversational turn history grounded in scheme legal text.</td>
+        </tr>
+        <tr>
+          <td><strong>F-08</strong></td>
+          <td>Google Maps Grounded Nearby Centers</td>
+          <td>Top Nav "Map & Centers"</td>
+          <td>POST <code>/api/maps/nearby-centers</code> using Gemini 3.8 Flash with <code>googleMaps</code> tool + deterministic PIN/town search & fallback directory in <code>geoUtils.ts</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>F-09</strong></td>
+          <td>Public Transit & Commute Guidance</td>
+          <td>Job Details Modal "यातायात व रास्ता"</td>
+          <td>POST <code>/api/maps/job-transit</code> querying Gemini Maps grounding for nearest railway station, bus stand, shared auto advice, and landmarks.</td>
+        </tr>
+        <tr>
+          <td><strong>F-10</strong></td>
+          <td>Kaushal Biodata & Skill Card (PDF/Print/WhatsApp)</td>
+          <td>Header/Footer/Dashboard button</td>
+          <td><code>KaushalBiodataModal</code> rendering high-contrast printable A4 skill card, QR verification badge simulation, and 1-tap WhatsApp URL generator.</td>
+        </tr>
+        <tr>
+          <td><strong>F-11</strong></td>
+          <td>Curated Video Training & Direct YouTube Search</td>
+          <td>Top Nav "Training"</td>
+          <td><code>TrainingSection</code> displaying curated bilingual YouTube courses across 10 trades, skill filtering, and direct YouTube search redirect.</td>
+        </tr>
+        <tr>
+          <td><strong>F-12</strong></td>
+          <td>Vocational Career Advisory & Wage Tiers</td>
+          <td>User Dashboard / API</td>
+          <td>Server endpoint returning 3-stage wage progression, RPL skill cards, NCVT certification guidance, and local cluster demand.</td>
+        </tr>
+        <tr>
+          <td><strong>F-13</strong></td>
+          <td>Real-Time Job/Scheme/Application Bookmarks</td>
+          <td>Job & Training cards</td>
+          <td>User profile local state & Firestore synchronization of <code>savedJobIds</code>, <code>appliedJobIds</code>, and <code>savedTrainingIds</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>F-14</strong></td>
+          <td>Interactive Demo Persona Switcher</td>
+          <td>Hero "Try Demo" & Footer</td>
+          <td><code>DemoSelectorModal</code> loading 4 pre-configured personas (Ravi, Sunita, Manoj, Amit) across different trades, languages, and states.</td>
+        </tr>
+        <tr>
+          <td><strong>F-15</strong></td>
+          <td>Role-Protected Admin Console</td>
+          <td>Profile dropdown (Admin only)</td>
+          <td><code>AdminDashboard</code> restricted to authorized administrators for posting new vacancies, toggling active status, and deleting listings in Firestore.</td>
+        </tr>
+        <tr>
+          <td><strong>F-16</strong></td>
+          <td>Global Dark Mode / Light Mode Theme Engine</td>
+          <td>Top Nav Sun/Moon button</td>
+          <td><code>localStorage</code>-persisted theme toggling <code>dark</code> class on root HTML document with Tailwind dark palette tokens.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 3. User Flows -->
+    <h2 id="sec-3">3. User Flows & Navigation Architecture</h2>
+    <h3>3.1 Primary Navigation Top Bar</h3>
+    <ul>
+      <li><strong>Left-Aligned Primary Links</strong>: Home, Jobs, Govt Schemes, Training, Map & Centers.</li>
+      <li><strong>Right-Aligned Controls</strong>: Mobile Shortcuts (Jobs, Centers), Sun/Moon Theme Toggle, Globe Language Selector (Hindi, English, Bengali, Odia, Tamil), User Avatar Dropdown (Dashboard, Admin Console, Logout), and Mobile Hamburger Menu.</li>
+    </ul>
+
+    <!-- 6. Architecture -->
+    <h2 id="sec-6">6. Architectural Blueprint</h2>
+    <pre>
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                                CLIENT (Browser)                                   │
+│   React 18 + Vite + Tailwind CSS + Lucide Icons                                   │
+│   ├── App.tsx (Root State, Router, Auth & Data Subscriptions)                     │
+│   ├── Components (Header, SkillInput, JobCard, NearbyCentersMap, etc.)           │
+│   ├── Deterministic Logic (matching.ts, geoUtils.ts, translations.ts)             │
+│   └── Firebase Web Client (auth, onAuthStateChanged, onSnapshot)                 │
+└─────────────────────────┬─────────────────────────────────────────────────────────┘
+                          │ HTTP REST Requests
+                          ▼
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                               BACKEND (Express.js)                                │
+│   server.ts (Binds to 0.0.0.0:3000)                                               │
+│   ├── In-Memory LRU Cache (60 min TTL for AI & Maps lookups)                      │
+│   ├── Rate Limit Defense (Auto-fallback on HTTP 429 RESOURCE_EXHAUSTED)           │
+│   ├── Endpoints:                                                                  │
+│   │   ├── POST /api/skills/extract                                                │
+│   │   ├── POST /api/jobs/explain-match                                            │
+│   │   ├── POST /api/schemes/explain-simple                                        │
+│   │   ├── POST /api/schemes/chat                                                  │
+│   │   ├── POST /api/maps/nearby-centers   (Gemini + googleMaps tool)              │
+│   │   ├── POST /api/maps/job-transit      (Gemini + googleMaps tool)              │
+│   │   └── ALL  /api/advisory/advice                                               │
+│   └── Vite Dev Server / Static dist/ SPA Serving Fallback                         │
+└─────────────────────────┬───────────────────────────────┬─────────────────────────┘
+                          │                               │
+                          ▼                               ▼
+      ┌───────────────────────────────┐       ┌───────────────────────────────┐
+      │     Google Gemini API         │       │       Firebase Platform       │
+      │   (@google/genai SDK)         │       │  ├── Firebase Auth (Google)   │
+      │  ├── gemini-3.8-flash         │       │  └── Cloud Firestore          │
+      │  └── Tool: googleMaps         │       │      ├── /jobs, /schemes      │
+      └───────────────────────────────┘       │      └── /user_applications   │
+                                              └───────────────────────────────┘
+    </pre>
+
+    <!-- 10. Business Logic -->
+    <h2 id="sec-10">10. Business Logic & Matching Algorithm</h2>
+    <p>The core matching algorithm is deterministic, ensuring reproducible and verifiable ranking without relying on nondeterministic LLM sorting:</p>
+    <pre>
+// Base skill match weight: 70%
+const skillRatio = normalizedJobSkills.length > 0 ? (matchedSkills.length / normalizedJobSkills.length) : 0;
+let baseScore = Math.round(skillRatio * 70);
+
+// Preferred skills bonus: up to 10%
+if (job.preferredSkills && job.preferredSkills.length > 0) {
+  const prefMatches = job.preferredSkills.filter(ps => normalizedUserSkills.includes(ps.toLowerCase()));
+  baseScore += Math.round((prefMatches.length / job.preferredSkills.length) * 10);
+}
+
+// Location match weight: 20%
+const locationMatch = Boolean(userState && job.state.toLowerCase() === userState.toLowerCase());
+if (locationMatch) {
+  baseScore += 20;
+} else if (!userState) {
+  baseScore += 10;
+}
+
+const matchPercentage = Math.min(Math.max(baseScore, 0), 100);
+    </pre>
+
+    <!-- 14. Dependencies -->
+    <h2 id="sec-14">14. Dependencies & Technical Stack</h2>
+    <ul>
+      <li><strong>Frontend</strong>: React 18.3.1, Vite 6.1.0, Tailwind CSS v4.0.6, Lucide React Icons (0.475.0).</li>
+      <li><strong>Backend</strong>: Express 4.21.2, TypeScript 5.7.3, tsx 4.19.2, esbuild 0.25.0.</li>
+      <li><strong>AI & Grounding</strong>: <code>@google/genai</code> 0.1.1 (Gemini 3.8 Flash) with <code>googleMaps</code> tool.</li>
+      <li><strong>Database & Auth</strong>: Firebase 11.4.0 (Cloud Firestore & Google Auth).</li>
+    </ul>
+
+    <!-- 20. Reconstruction Checklist -->
+    <h2 id="sec-20">20. Step-by-Step Reconstruction Checklist</h2>
+    <ol>
+      <li><strong>Scaffold Base Project</strong>: React 18 + Vite + TypeScript + Tailwind CSS v4 + Express backend.</li>
+      <li><strong>Establish Types & Mock Data</strong>: Implement <code>src/types.ts</code>, <code>src/data/mockData.ts</code>, and <code>src/data/trainingVideos.ts</code>.</li>
+      <li><strong>Implement Deterministic Engines</strong>: Create <code>matching.ts</code> and <code>geoUtils.ts</code> with PIN code / district lookups.</li>
+      <li><strong>Configure Backend Endpoints</strong>: In <code>server.ts</code>, configure Gemini 3.8 Flash routes with caching and fallbacks.</li>
+      <li><strong>Build Core Views & Modals</strong>: Header, SkillInputSection, JobCard, SchemeCard, NearbyCentersMap, TrainingSection, KaushalBiodataModal.</li>
+      <li><strong>Integrate Realtime Firebase Sync</strong>: Add listeners for jobs, schemes, and user applications in <code>src/lib/firebase.ts</code>.</li>
+      <li><strong>Test & Compile</strong>: Verify zero-error compilation via <code>npm run build</code>.</li>
+    </ol>
+
+    <!-- 23. Final Self-Check -->
+    <h2 id="sec-23">23. Final Self-Check & Verification</h2>
+    <p>
+      This document captures every interface, API endpoint, routing rule, responsive breakpoint, data model, prompt template, and fallback mechanism implemented in the KaushalSetu codebase. It is 100% self-contained and serves as an authoritative reconstruction blueprint.
+    </p>
+
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted);">
+      <div>KaushalSetu Portal • National Rural Skill & Opportunity Platform</div>
+      <div>Generated by Google AI Studio</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

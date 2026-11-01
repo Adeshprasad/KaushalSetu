@@ -1,0 +1,111 @@
+{
+  "entities": {
+    "UserProfile": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "language": { "type": "string" },
+        "state": { "type": "string" },
+        "district": { "type": "string" },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "experienceYears": { "type": "number" },
+        "savedJobIds": { "type": "array", "items": { "type": "string" } },
+        "appliedJobIds": { "type": "array", "items": { "type": "string" } },
+        "role": { "type": "string", "enum": ["candidate", "employer", "admin"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "skills"]
+    },
+    "Job": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHi": { "type": "string" },
+        "employer": { "type": "string" },
+        "location": { "type": "string" },
+        "state": { "type": "string" },
+        "salaryMin": { "type": "number" },
+        "salaryMax": { "type": "number" },
+        "requiredSkills": { "type": "array", "items": { "type": "string" } },
+        "experienceMinYears": { "type": "number" },
+        "education": { "type": "string" },
+        "description": { "type": "string" },
+        "applicationInfo": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "vacancies": { "type": "number" },
+        "workType": { "type": "string" },
+        "postedDate": { "type": "string" },
+        "isVerified": { "type": "boolean" },
+        "isActive": { "type": "boolean" },
+        "source": { "type": "string" },
+        "sourceName": { "type": "string" },
+        "sourceUrl": { "type": "string" },
+        "externalId": { "type": "string" }
+      },
+      "required": ["id", "title", "employer", "location", "state", "requiredSkills"]
+    },
+    "GovernmentScheme": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "nameHi": { "type": "string" },
+        "ministry": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "targetAudience": { "type": "string" },
+        "eligibility": { "type": "array", "items": { "type": "string" } },
+        "benefits": { "type": "array", "items": { "type": "string" } },
+        "applicationProcess": { "type": "array", "items": { "type": "string" } },
+        "documents": { "type": "array", "items": { "type": "string" } },
+        "officialSource": { "type": "string" },
+        "relevantSkills": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "name", "ministry", "category"]
+    },
+    "UserApplication": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "jobId": { "type": "string" },
+        "jobTitle": { "type": "string" },
+        "employer": { "type": "string" },
+        "applicantId": { "type": "string" },
+        "applicantName": { "type": "string" },
+        "applicantEmail": { "type": "string" },
+        "applicantPhone": { "type": "string" },
+        "applicantLocation": { "type": "string" },
+        "applicantSkills": { "type": "array", "items": { "type": "string" } },
+        "appliedDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["submitted", "under_review", "shortlisted", "interview_scheduled"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "jobId", "applicantName", "applicantPhone"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and candidate preferences"
+    },
+    "/jobs/{jobId}": {
+      "schema": "Job",
+      "description": "Verified vocational and technical jobs"
+    },
+    "/schemes/{schemeId}": {
+      "schema": "GovernmentScheme",
+      "description": "Official government welfare and skill development schemes"
+    },
+    "/applications/{applicationId}": {
+      "schema": "UserApplication",
+      "description": "Job applications submitted by candidates"
+    }
+  }
+}
